@@ -1,7 +1,7 @@
 # BLAP - BuckList Account Plan
 
 
-<img width="700" src="https://ifh.cc/g/YSZZhi.png">
+<img width="500" src="https://ifh.cc/g/YSZZhi.png">
 
 
 ## Introduction
