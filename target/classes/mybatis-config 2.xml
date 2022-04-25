@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+	<configuration>
+		<typeAliases>
+			<typeAlias alias="bucket" type="com.blap.blapweb.DTO.BucketDTO"/>
+			<typeAlias alias="bucketstate" type="com.blap.blapweb.DTO.BucketStateDTO"/>
+<!-- 			<typeAlias alias="bucketpage" type="com.blap.blapweb.DTO.BucketPageDTO"/>
+ -->			<typeAlias alias="budget" type="com.blap.blapweb.DTO.BudgetDTO"/>
+			<typeAlias alias="budgetbalance" type="com.blap.blapweb.DTO.BudgetBalanceDTO"/>
+			<typeAlias alias="monthexpenditure" type="com.blap.blapweb.DTO.MonthExpenditureDTO"/>
+			<typeAlias alias="monthbudget" type="com.blap.blapweb.DTO.MonthBudgetDTO"/>
+			<typeAlias alias="account" type="com.blap.blapweb.DTO.AccountDTO"/>
+			<typeAlias alias="expenditure" type="com.blap.blapweb.DTO.ExpenditureDTO"/>
+			<typeAlias alias="tagExpenditure" type="com.blap.blapweb.DTO.TagExpenditureDTO"/>
+			<typeAlias alias="tag" type="com.blap.blapweb.DTO.TagDTO"/>
+			<typeAlias alias="user" type="com.blap.blapweb.DTO.UserDTO"/>
+			<typeAlias alias="tagCount" type="com.blap.blapweb.DTO.TagCountDTO"/>
+<!-- 			<typeAlias alias="user" type="com.blap.blapweb.DTO.UserDTO"/>
+ -->	</typeAliases>
+		
+	</configuration>

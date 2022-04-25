@@ -28,17 +28,17 @@
     <div class="collapse navbar-collapse d-flex justify-content-center" id="collapsibleNavbar" >
       <ul class="navbar-nav">
          <li class="nav-item me-5">
-           <a class="nav-link" href="about">ABOUT</a>
-         </li>
-         <li class="nav-item me-5">
-           <a class="nav-link" href="Bucketlist">BUCKET</a>
-         </li>
-         <li class="nav-item me-5">
-           <a class="nav-link" href="Budget">BUDGET</a>
-         </li>
-         <li class="nav-item me-5">
-           <a class="nav-link" href="Mypage">PROFILE</a>
-         </li>
+		        <a class="nav-link" href="about">ABOUT</a>
+		      </li>
+		      <li class="nav-item me-5">
+		        <a class="nav-link" href="readbucket">BUCKET</a>
+		      </li>
+		      <li class="nav-item me-5">
+		        <a class="nav-link" href="readbudget">BUDGET</a>
+		      </li>
+		      <li class="nav-item me-5">
+		        <a class="nav-link" href="readaccount">PROFILE</a>
+		      </li>
        </ul>
      </div>
   </div>
@@ -101,20 +101,72 @@
 <script src="./resources/assets/js/popper.js"></script>
    <script src="./resources/assets/js/bootstrap.min.js"></script>
    <script>
-   new Chart(document.getElementById("doughnut-chart"), {
-       type: 'doughnut',
-       data: {
-        labels: ["시작하지 않음", "진행중", "완료"],
-         datasets: [
-           {
-             label: "STATE (percent)",
-             backgroundColor: ["#CE6B6B", "#F1CD71","#569D73"],
-             data: [49, 27, 24]
-           }
-         ]
-       },
-   });
+  	var chartLabels = [];
+	var chartData = [];
+	var chartLabels2 = [];
+	var chartData2 = [];
+
+	$.getJSON("http://localhost:8080/blapweb/statelist", function(data) {
+
+		$.each(data, function(inx, obj) {
+			
+			if(obj.state == 0) chartLabels.push("시작하지 않음")
+		 	else if(obj.state == 1) chartLabels.push("진행중")
+			else if(obj.state == 2) chartLabels.push("완료")
+
+			chartData.push(obj.cnt);
+
+		});
+
+		createChart();
+		console.log(data)
+		console.log(chartLabels) 
+		console.log(chartData)
+	});
+	
+	$.getJSON("http://localhost:8080/blapweb/tagCount", function(data) {
+
+		$.each(data, function(inx, obj) {
+			
+			chartLabels2.push(obj.Tag_name)
+			chartData2.push(obj.Tag_count);
+
+		});
+
+		createChart();
+		console.log("twotwo")
+		console.log(chartLabels2)
+		console.log(chartData2) 
+	});
+	
+	
+	var doughnutChartData = {
+
+			labels : chartLabels,
+
+			datasets : [{
+
+				label : "Bucket State",
+
+				backgroundColor: ["#CE6B6B", "#F1CD71","#569D73"],
+
+				data : chartData
+
+			}]
+	}
+	
+	function createChart() {
+ 
+		var ctx = document.getElementById("doughnut-chart").getContext("2d");
+
+		new Chart(ctx, {
+		      type: 'doughnut',
+			  data: doughnutChartData
+		}); 
+	} 
  </script>
+ 
+
   
 </body>
 </html>

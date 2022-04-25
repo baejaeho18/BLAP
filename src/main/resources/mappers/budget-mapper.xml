@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Budget">
+	<insert id="insertBudget">
+      insert into B_budget (bucket_id, budget_name, budget, expenditure) values (1, #{budget_name}, #{budget}, 0)
+	</insert>
+	
+	<update id="updateBudget">
+		<!-- update B_budget 
+		set budget_name=#{budget_name}, budget=#{budget}
+		where budget_id=#{budget_id} -->
+		      update B_budget set budget_name=#{budget_name}, budget=#{budget}, expenditure=#{expenditure} where budget_id=#{budget_id}
+		
+	</update>
+	
+	<delete id="deleteBudget">
+		delete from B_budget where budget_id=#{budget_id}
+	</delete>
+	
+	<select id="getBudget" resultType="budget">
+		<!-- select * from B_budget where budget_id=#{budget_id} -->
+		      select budget from B_budget where bucket_id=#{bucket_id} order by budget_id
+		
+	</select>
+	
+	<select id="getBudgetList" resultType="budget">
+<!-- 		select * from B_budget order by budget_id desc
+ -->	
+ 	      select * from B_budget where bucket_id=#{bucket_id} order by budget_id
+ 	
+ </select>
+	
+	<select id="getBudgetBalance" resultType="budgetbalance">
+		select balance
+		from B_account
+		order by account_date desc
+		limit 1;
+	</select>
+	
+	<select id="getMonthExpenditure" resultType="monthexpenditure">
+		select SUM(money) AS expenditure
+		from B_account
+		where type=1 AND (select extract(year from account_date))=2022 AND 1=(select extract(month from account_date));
+	</select>
+	
+	<select id="getMonthBudget" resultType="monthbudget">
+		select SUM(budget) AS budget
+		from B_budget AS B
+		where B.bucket_id IN (
+		    select bucket_id
+		    from B_bucketlist
+		    where (select extract(year from goal_date))=2022 AND 1=(select extract(month from goal_date))
+		);
+	</select>
+	
+	<!-- <select id="countBudgetList" resultType="Int">
+		select count(*) from B_bucketlist
+	</select>
+	
+	
+	<select id="selectBucketList" resultType="bucket">
+	select A.*
+		from
+		(
+		    select
+		        @ROWNUM := @ROWNUM + 1 AS ROWNUM,
+		        B_bucketlist.*
+		    from
+		        B_bucketlist, (select @ROWNUM := 0) R
+		    order by bucket_id desc
+		) A
+		where A.ROWNUM between #{start} and #{end};
+		
+	</select> -->
+	
+	
+</mapper>

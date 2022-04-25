@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Account">
+   <insert id="insertAccount">
+       insert into B_account( money, type, balance)
+       select #{money},  0, balance+#{money}
+       from B_account
+       order by account_date desc
+       limit 1;
+   </insert>
+   
+   <insert id="insert_s_Account">
+       insert into B_account( money, type, balance)
+       select #{money}, #{type}, balance-#{money}
+       from B_account
+       order by account_date desc
+       limit 1;
+   </insert>
+   
+   <select id="getAccount" resultType="account">
+      select * from B_account where account_id=#{account_id}
+   </select>
+   <select id="getAccountList" resultType="account">
+      select * from B_account order by account_id desc
+   </select>
+   
+   <select id="countAccountList" resultType="Int">
+		select count(*) from B_account;
+	</select>
+   
+   <select id="selectAccountList" resultType="account">
+	    select A.*
+			from
+			(
+			    select
+			        @ROWNUM := @ROWNUM + 1 AS ROWNUM,
+			        B_account.*
+			    from
+			        B_account, (select @ROWNUM := 0) R
+			    order by account_id desc
+			) A
+			where A.ROWNUM between #{start} and #{end};
+	</select>
+	
+	<select id = "getExpenditure" resultType ="expenditure">
+		select account_date, money from B_account where type='1'
+	</select>
+
+	<select id = "getTagExpenditure" resultType = "tagExpenditure">
+		SELECT T.tag_name AS Tag_name, SUM(money) AS Expenditure_sum
+		FROM camp3.B_account AS A, camp3.B_tag AS T, camp3.B_bucket_has_tag AS H
+		WHERE A.bucket_id = H.bucket_id and H.tag_id = T.tag_id
+		GROUP BY T.tag_name;
+	</select>
+	
+	 <insert id="insert_bucket_Account">
+       insert into B_account( money, type, balance, bucket_name)
+       select #{money},  2, if(B_account.balance-#{money} <![CDATA[<]]> 0, 0, B_account.balance-#{money}), B_bucketlist.bucket_name
+       from B_account   
+       order by account_date desc
+       limit 1,
+       B_bucketlist where bucket_id=#{bucket_id};
+   </insert>
+</mapper>
+
+

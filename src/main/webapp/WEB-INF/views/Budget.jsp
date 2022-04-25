@@ -113,30 +113,30 @@
 
 <body>
    <nav class="navbar navbar-expand-sm bg-white navbar-light fixed-top border-bottom">
-	  <div class="container-fluid">
-	  	 <a href=".">
-	      <img src="./resources/assets/img/logo.png" alt="blap Logo" style="width:80px; height:55px">
-	     </a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-	      <span class="navbar-toggler-icon"></span>
-	    </button>
-	    <div class="collapse navbar-collapse d-flex justify-content-center" id="collapsibleNavbar" >
-		   <ul class="navbar-nav">
-		      <li class="nav-item me-5">
-		        <a class="nav-link" href="about">ABOUT</a>
-		      </li>
-		      <li class="nav-item me-5">
-		        <a class="nav-link" href="Bucketlist">BUCKET</a>
-		      </li>
-		      <li class="nav-item me-5">
-		        <a class="nav-link" href="Budget">BUDGET</a>
-		      </li>
-		      <li class="nav-item me-5">
-		        <a class="nav-link" href="Mypage">PROFILE</a>
-		      </li>
-		    </ul>
-		  </div>
-	  </div>
+     <div class="container-fluid">
+           <a href=".">
+          <img src="./resources/assets/img/logo.png" alt="blap Logo" style="width:80px; height:55px">
+         </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse d-flex justify-content-center" id="collapsibleNavbar" >
+           <ul class="navbar-nav">
+              <li class="nav-item me-5">
+                <a class="nav-link" href="about">ABOUT</a>
+              </li>
+              <li class="nav-item me-5">
+                <a class="nav-link" href="readbucket">BUCKET</a>
+              </li>
+              <li class="nav-item me-5">
+                <a class="nav-link" href="readbudget">BUDGET</a>
+              </li>
+              <li class="nav-item me-5">
+                <a class="nav-link" href="readaccount">PROFILE</a>
+              </li>
+            </ul>
+          </div>
+      </div>
 	</nav>
 
    <br>
@@ -175,38 +175,41 @@
    <div class="container" id="content">
       <div class="row">
          <div class="col-lg-7 col-md-12" style="overflow-y:auto;">
-            <div class="border col-lg-10 col-sm-12 mt-5 p-3 mb-4" style="border-radius: 5px;">
-               <span class="fw-bolder "style="display:inline-block; font-size: 20px; width:81%;">[여행] 제주도 여행</span>
-               <span class="align-middle" style="font-size: 15px; ">예상지출: 62만</span><br>
-               <span style="font-size: 15px; color:#908F8F">2022.01.11</span>
-               <button class="btn float-end fw-bolder" id="budget_popup_show" style="font-size: 14px;">VIEW MORE ></button>
+			<c:forEach items="${viewAll}" var="c">
+            <div class="border col-lg-10 col-sm-12 mt-4 p-3 mb-2" style="border-radius: 5px;">
+	               <div class="fw-bolder "style="display:inline-block; font-size: 20px; width:80%;">${c.getBucket_name()}</div>
+	               <span class="align-middle" style="font-size: 15px; ">예상지출: ${c.getTotal_expenditure()}만</span><br>
+	               <span id="dateColumn" style="font-size: 15px; color:#908F8F">${c.getGoal_date()}</span>
+	               <button class="btn float-end fw-bolder" onclick="location.href='viewbudgetpage/${c.getBucket_id()}'" style="font-size: 14px;">VIEW MORE ></button>
                <br>
-            </div>
-            <div class="border col-lg-10 col-sm-12 my-3 p-3 mb-4" style="border-radius: 5px;">
-               <span class="fw-bolder "style="display:inline-block; font-size: 20px; width:81%;">[취미] 테니스 배우기</span>
-               <span class="align-middle" style="font-size: 15px; ">예상지출: 14만</span><br>
-               <span style="font-size: 15px; color:#908F8F">2022.01.11</span>
-               <button class="btn float-end fw-bolder" id="budget_popup_show" style="font-size: 14px;">VIEW MORE ></button>
-               <br>
-            </div>
-            <div class="border col-lg-10 col-sm-12 my-3 p-3 mb-4" style="border-radius: 5px;">
-               <span class="fw-bolder "style="display:inline-block; font-size: 20px; width:81%;">[가족] 부모님 여행 보내드리기</span>
-               <span class="align-middle" style="font-size: 15px; ">예상지출: 85만</span><br>
-               <span style="font-size: 15px; color:#908F8F">2022.01.11</span>
-               <button class="btn float-end fw-bolder" id="budget_popup_show" style="font-size: 14px;">VIEW MORE ></button>
-               <br>
-            </div>
-            <div class="border col-lg-10 col-sm-12 my-3 p-3 mb-4" style="border-radius: 5px;">
-               <span class="fw-bolder "style="display:inline-block; font-size: 20px; width:81%;">[음식] 뭉티기(대구 동성로)</span>
-               <span class="align-middle" style="font-size: 15px; ">예상지출: 10만</span><br>
-               <span style="font-size: 15px; color:#908F8F">2022.01.11</span>
-               <button class="btn float-end fw-bolder" id="budget_popup_show" style="font-size: 14px;">VIEW MORE ></button>
-               <br>
-            </div>
+            	</div>
+            </c:forEach>
+            
+            
+                  	<div class="mt-5"style="display: block; text-align: center;">		
+		<c:if test="${paging.startPage != 1 }">
+			<a href="/blapweb/readbudget?nowPage=${paging.startPage - 1 }&cntPerPage=${paging.cntPerPage}">&lt;</a>
+		</c:if>
+		<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="p">
+			<c:choose>
+				<c:when test="${p == paging.nowPage }">
+					<b class="me-3">${p }</b>
+				</c:when>
+				<c:when test="${p != paging.nowPage }">
+					<a href="/blapweb/readbudget?nowPage=${p }&cntPerPage=${paging.cntPerPage}">${p }</a>
+				</c:when>
+			</c:choose>
+		</c:forEach>
+		<c:if test="${paging.endPage != paging.lastPage}">
+			<a href="/blapweb/readbudget?nowPage=${paging.endPage+1 }&cntPerPage=${paging.cntPerPage}">&gt;</a>
+		</c:if>
+	</div>    
          </div>
-         <div class="container-fluid col-lg-5 col-md-12" id="budget_state_vertical">
+         
+    <div class="container-fluid col-lg-5 col-md-12" id="budget_state_vertical">
             <div class="row">
-               <span style="font-size: 22px;">예산 현황</span>
+               <span class="fw-light mb-4" style="font-size: 22px;">이번달 지출 현황</span>
+               <span class="fw-light" style="font-size: 15px; display:inline">[천원]</span>
                <div class="container-fluid col-sm-5 p-3 border" style="border:1px solid; border-radius: 10px; height:375px;">
                   <br>
                   <canvas id="verticalChart" style="weight:60%; height:100%; padding: 10px;"></canvas>
@@ -218,16 +221,16 @@
                      <div class="col-sm-12" style="margin-top:40%; padding-bottom:100%; border-radius:50%;background-color:#FFE2E2;"></div>
                   </div>
                   <div class="col-sm-5">
-                     <div class="col-sm-12" style="margin-top:8%; min-width:85px">현월 예산</div>
-                     <div class="col-sm-12" style="margin-top:8%; min-width:85px">현재 지출액</div>
-                     <div class="col-sm-12" style="margin-top:8%; min-width:85px">예정 지출액</div>
+                     <div class="col-sm-12" style="margin-top:8%; min-width:85px">현재 예산</div>
+                     <div class="col-sm-12" style="margin-top:8%; min-width:85px">이번달 지출</div>
+                     <div class="col-sm-12" style="margin-top:8%; min-width:85px">이번달 예산</div>
                      <div class="col-sm-12" style="margin-top:8%; min-width:85px">초과 예산</div>
                   </div>
                   <div class="col-sm-5">
-                     <div class="col-sm-12" style="margin-top:8%; min-width:80px; margin-left:min(15px,1%)">680,000</div>
-                     <div class="col-sm-12" style="margin-top:8%; min-width:80px; margin-left:min(15px,1%)">568,390</div>
-                     <div class="col-sm-12" style="margin-top:8%; min-width:80px; margin-left:min(15px,1%)">1,140,000<div>
-                     <div class="col-sm-12" style="margin-top:8%; min-width:80px; margin-left:min(15px,1%); color:red">-1,028,390</div>
+                     <div class="col-sm-12" id="chart1" style="margin-top:8%; min-width:80px; margin-left:min(15px,1%)"></div>
+                     <div class="col-sm-12" id="chart2" style="margin-top:8%; min-width:80px; margin-left:min(15px,1%)"></div>
+                     <div class="col-sm-12" id="chart3" style="margin-top:8%; min-width:80px; margin-left:min(15px,1%)"><div>
+                     <div class="col-sm-12" id="chart4" style="margin-top:8%; min-width:80px; margin-left:min(15px,1%); color:red"></div>
                   </div>
                </div>
             </div>
@@ -236,6 +239,7 @@
    </div>
    </div>
    </div>
+
 
    <div class="mt-4 p-3 bg-secondary text-white text-end" style="margin-bottom: 0; background-color: #C1DDD3 !important; height: 100px">
       <p class="pt-5" style="display: inline-block; font-size: 13px">이용약관</p>
@@ -256,7 +260,7 @@
             </div>
             <div class="table-wrap">
                <div class="table-box table-box--vertical"><br>
-                  <table class="table table--vertical">
+                  <table class="table table--vertical" id="BudgetList">
                      <thead>
                         <tr> <th class="th-1"></th> <th class="th-2">항목</th> <th class="th-3">예상 지출액</th> <th class="th-4">실제 지출액</th>   </tr>
                      </thead>
@@ -267,14 +271,38 @@
                         <tr> <th>4</th> <td>식비</td> <td>150,000</td> <td>223,210<br><span style="color:#FF0000; font-size:12px;">-73,210</span></td> </tr>
                         <tr> <th>5</th> <td>비상금</td> <td>100,000</td> <td style="color:#989595">100,000</td> </tr>
                         <tr style="background-color:#DCDCDC;"> <th></th> <th>총액</th> <td style="font-size:17px;">620,000</td> <td>568,390<br><span style="color:#0500FF; font-size:12px;">+51,610</span></td> </tr>
-                     </tbody>
+                     </tbody>       
                   </table>
+                  <%-- 
+                  <table id="list">
+						<tr>
+	                     	<th class="th-1"></th>
+	                     	<th class="th-2">항목</th>
+	                     	<th class="th-3">예상 지출액</th>
+	                    	<th class="th-4">실제 지출액</th>
+	                    </tr>
+		   				<c:forEach items="${Budgetlist}" var="t">
+	                     	<tr>
+	                     		<th>hihi</th>
+	                     		<th>${t.getBudget_id()}</th>
+	                     		<td>${t.getBudget_name()}</td>
+	                     		<td>${t.getBudget()}</td>
+	                     		<td class="posneg" id="difference"><input style="border:none color:black" type="number" id="expenditure" placeholder="${t.getbudget}"/><br>${t.getDifference()}</td>
+	                     	</tr>
+	                     </c:forEach>
+	                     <tr>
+							<th></th>
+							<th>총액</th>
+							<td style="font-size:17px;"></td>
+							<td>${totalExpenditure}<br>${totalDifference }</td>
+						</tr>  
+					</table> --%>
                </div>
             </div>
             <div class="row mb-3">
             	<div class="col d-flex justify-content-end" >
-            		<button class="btn  border  justify-content-end me-4" id="budget_popup_confirm">수정</button>
-            		<button class="btn border  justify-content-end" id="budget_popup_confirm">확인</button>	
+            		<button class="btn border justify-content-end me-4" id="budget_popup_update" onclick="location.href='update'">수정</button>
+            		<button class="btn border justify-content-end" id="budget_popup_complete" onclick="location.href='complete'">마감</button>	
             	</div>
             </div>
          </div>
@@ -282,87 +310,120 @@
    </div>
    
 
-   <script src="./resources/assets/js/popper.js"></script>
+      <script src="./resources/assets/js/popper.js"></script>
    <script src="./resources/assets/js/bootstrap.min.js"></script>
    <script>
-   var xValues = ["예산","지출"];
-   new Chart("verticalChart", {
-     type: "bar",
-     data: {
-       labels: xValues,
-       datasets: [{ 
-         data: [680000/10000,0],
-         stack:true,
-         label:"현월 예산",
-         backgroundColor: "#F4B5B5",
-         fill: false
-       }, { 
-         data: [0,568390/10000],
-         backgroundColor: "#F9D7D7",
-         label:"현재 지출액",
-         stack:true,
-         fill: false
-       }, { 
-         data: [0,1140000/10000],
-         backgroundColor: "#FFE2E2",
-         label:"지출 예정액",
-         stack:true,
-         fill: false
-       }]
-     },
-     options: {
-       legend: {display: false},
-       responsive:true,
-       maintainAspectRatio:false
-     }
-   });
+	var chartData1 = [];
+	var chartData2 = [0];
+	var chartData3 = [0];
+	var xValues = ["예산","지출"];
+	
+	$.getJSON("http://localhost:8080/blapweb/budgetbalance", function(data1) {
+
+		$.each(data1, function(inx, obj1) {
+			console.log("11111");
+			chartData1.push(obj1.balance/1000);
+			chartData1.push(0);
+			console.log(obj1.balance);
+			console.log(chartData1[0]);
+			createChart();
+			viewChart();
+		});
+	});
+ 	
+	$.getJSON("http://localhost:8080/blapweb/monthexpenditure", function(data2) {
+		$.each(data2, function(inx2, obj2) {
+			console.log("22222");
+			chartData2.push(obj2.expenditure/1000);
+			console.log(obj2.expenditure);
+			console.log(chartData2);
+			createChart();
+			viewChart();
+		});
+	});
+	
+	$.getJSON("http://localhost:8080/blapweb/monthbudget", function(data3) {
+		$.each(data3, function(inx3, obj3) {
+			console.log("3333");
+			chartData3.push(obj3.budget/1000);
+			console.log(obj3.budget);
+			console.log(chartData3);
+			createChart();
+			viewChart();
+		});
+	});
+	var barChartData = {
+
+			 labels: xValues,
+		     datasets: [{ 
+		       data: chartData1, 
+		         stack:true,
+		         label:"현재 예산",
+		         backgroundColor: "#F4B5B5",
+		         fill: false
+		       }, { 
+		        data: chartData2, 
+		         backgroundColor: "#F9D7D7",
+		         label:"이번달 지출",
+		         stack:true,
+		         fill: false
+		       }, { 
+		    	data : chartData3, 
+		         backgroundColor: "#FFE2E2",
+		         label:"이번달 예산",
+		         stack:true,
+		         fill: false
+		      }],
+	}
+	
+	function createChart() {
+	 	
+		var ctx = document.getElementById("verticalChart").getContext("2d");
+
+		new Chart(ctx, {
+		      type: 'bar',
+			  data: barChartData,
+			  options: {
+		          legend: {display: false},
+		          responsive:true,
+		          maintainAspectRatio:false
+		        }
+		}); 
+		
+	}
+	
+	function viewChart(){
+		document.getElementById('chart1').innerHTML = chartData1[0];
+		document.getElementById('chart2').innerHTML =chartData2[1];
+		document.getElementById('chart3').innerHTML =chartData3[1];
+		var a = chartData3[1]-chartData2[1];
+	 	document.getElementById('chart4').innerHTML = a;
+	}
+	
+	 
    </script>
-   <script>
-   var yValues = ["예산","지출"];
-   new Chart("horizontalChart", {
-     type: "horizontalBar",
-     data: {
-       labels: yValues,
-       datasets: [{ 
-         data: [680000/10000,0],
-         stack:true,
-         label:"현월 예산",
-         backgroundColor: "#F4B5B5",
-         fill: false
-       }, { 
-         data: [0,568390/10000],
-         backgroundColor: "#F9D7D7",
-         label:"현재 지출액",
-         stack:true,
-         fill: false
-       }, { 
-         data: [0,1140000/10000],
-         backgroundColor: "#FFE2E2",
-         label:"지출 예정액",
-         stack:true,
-         fill: false
-       }]
-     },
-     options: {
-       legend: {display: false},
-       responsive:true,
-       maintainAspectRatio:false
-     } 
-   });
-   </script>
+   
+   
+ 
    <script>
       function budget_popup_show () {
         document.querySelector(".background").className = "background budget_popup_show";
       }
-      function budget_popup_close () { 
+      function budget_popup_close () {
         document.querySelector(".background").className = "background";
       }
-      function budget_popup_confirm () { 
-           document.querySelector(".background").className = "background";
+      function budget_popup_update () {
+       if(confirm("정말로 수정하시겠습니까?")) lacation.href = "editBudget/"+bucket_name;  
+         document.querySelector(".background").className = "background";
       }
+      function budget_popup_complete () { 
+         if(confirm("정말로 완료하시겠습니까?")) location.href = "complete/"+bucket_name;
+       document.querySelector(".background").className = "background";
+     }
+      document.querySelector("#budget_popup_show").addEventListener('click', budget_popup_show);
       document.querySelector("#budget_popup_show").addEventListener('click', budget_popup_show);
       document.querySelector("#budget_popup_close").addEventListener('click', budget_popup_close);
-      document.querySelector("#budget_popup_confirm").addEventListener('click', budget_popup_close);
+      document.querySelector("#budget_popup_update").addEventListener('click', budget_popup_close);
    </script>
    <script>
       $(".categoryimg").mouseover(function() {
@@ -371,6 +432,33 @@
       $(".categoryimg").mouseout(function() {
          $(this).attr("src", $(this).attr("src").slice(0,-12)+".png");
       });
+      function add() {
+          document.getElementById('total_difference').value = 0;
+          for(i=1; i<arrInput.length; i++) {
+              var id = 'difference'+i;
+              if(parseInt(document.getElementById(id).value)) document.getElementById('total_difference').value = parseInt(document.getElementById('total_difference').value) + parseInt(document.getElementById(id).value) ;
+          }
+          document.getElementById('total_expenditure').value = 0;
+          for(i=1; i<arrInput.length; i++) {
+              var id = 'expenditure'+i;
+              if(parseInt(document.getElementById(id).value)) document.getElementById('total_expenditure').value = parseInt(document.getElementById('total_expenditure').value) + parseInt(document.getElementById(id).value) ;
+          } 
+      }
+      function posneg(){
+         var target = document.getElementByClassName('posneg');
+         if(x>0){
+            targt.style.color = "blue";
+            target.value = '+'+target.value();
+         }
+         else if(x<0){
+            target.style.color = "red";
+            target.value = '-'+target.value();
+         }
+         else{
+            target.style.visibility = "hidden";
+         }
+      }
+      
    </script>
 </body>
 </html>

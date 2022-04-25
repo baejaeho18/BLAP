@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="User">
+	<insert id = "insertUser">
+		insert into B_user (user_name, email) values (#{user_name}, #{email})
+	</insert>
+	<!-- 인터셉터 후 셰션에 등록 -->
+	<select id = "getUser" resultType ="user">
+		select * from B_user where email=#{email}
+	</select>
+	<!-- 회원있는지 여부확인 -->
+	<select id="loginLookup" parameterType="user" resultType="Int">
+		select count(email) from B_user where email like #{email}
+	</select>
+	<select id="login_ok_nick" resultType="user">
+		select user_name, email from B_user where email like #{email}
+	</select>
+</mapper>

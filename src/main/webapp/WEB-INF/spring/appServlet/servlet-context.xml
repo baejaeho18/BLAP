@@ -14,8 +14,6 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
-	<resources location="/WEB-INF/views/json/" mapping="/json/**"/>
-	<resources mapping="/assets/**" location="/resources/assets/" /> 
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -23,14 +21,8 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-<!-- 	<context:component-scan base-package="com.blap.blapweb" />
- -->	
- 
- 	<context:component-scan base-package="com.blap.blapweb" use-default-filters="false">
-	<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
-</context:component-scan>
- 
- 
+	<context:component-scan base-package="com.blap.blapweb" />
+	
 	<beans:bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <beans:property name="location" value="/WEB-INF/config/config.properties"/>
         <beans:property name="fileEncoding" value="UTF-8" />
@@ -51,5 +43,18 @@
 	<beans:bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<beans:constructor-arg index="0" ref="sqlSessionFactory"/>
 	</beans:bean>	
-	
+	<!-- 인터셉터 객체 생성 -->
+	<beans:bean id="LoginInterceptor" class="com.blap.blapweb.Interceptor.LoginInterceptor">
+	</beans:bean>
+	<!-- Interceptor 설정 -->
+	<interceptors>
+	    <interceptor>
+	        <mapping path="/**"/>         
+	        <exclude-mapping path="/resources/**"/>
+	        <exclude-mapping path="/img/**"/>
+	        <exclude-mapping path="/SignIn/**"/>
+	        <beans:ref bean="LoginInterceptor"/>
+	    </interceptor>
+	</interceptors>
+
 </beans:beans>

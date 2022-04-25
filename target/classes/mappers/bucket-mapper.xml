@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Bucket">
+	<insert id="insertBucket">
+		insert into B_bucketlist (bucket_name, goal_date, need, preference, priority, image, memo) 
+		values (#{bucket_name}, #{goal_date}, #{need}, #{preference}, #{priority}, #{image},#{memo})
+	</insert>
+	
+	<update id="updateBucket">
+		update B_bucketlist 
+		set bucket_name=#{bucket_name}, goal_date=#{goal_date}, need=#{need}, preference=#{preference}, priority=#{priority}, image=#{image}, memo=#{memo}
+		where bucket_id=#{bucket_id}
+	</update>
+	
+	<delete id="deleteBucket">
+		delete from B_bucketlist where bucket_id=#{bucket_id}
+	</delete>
+	
+	<delete id="alldeleteBucket">
+		delete * from B_bucketlist 
+	</delete>
+	
+	<select id="getBucket" resultType="bucket">
+		select * from B_bucketlist where bucket_id=#{bucket_id}
+	</select>
+	
+	<select id="getBucketList" resultType="bucket">
+		select * from B_bucketlist order by bucket_id desc
+	</select>
+	
+	<select id="getStateList" resultType="bucketstate">
+		select state, count(*) as cnt 
+		from B_bucketlist
+		group by state order by cnt desc;
+	</select>
+	
+	<!-- <select id="getBucketPage" resultType="bucketpage">
+		
+	</select> -->
+	
+ 	<select id="countBucketList" resultType="Int">
+		select count(*) from B_bucketlist
+	</select>
+	
+	
+	<select id="selectBucketList" resultType="bucket">
+	select A.*
+		from
+		(
+		    select
+		        @ROWNUM := @ROWNUM + 1 AS ROWNUM,
+		        B_bucketlist.*
+		    from
+		        B_bucketlist, (select @ROWNUM := 0) R
+		    order by bucket_id desc
+		) A
+		where A.ROWNUM between #{start} and #{end}
+<!-- 		order by
+		<choose>
+			<when test="orderValue eq 'regdate'">A.bucket_id</when>
+		    <when test="orderValue eq 'recently'">A.bucket_id</when>
+		    <when test="orderValue eq 'need'">A.need</when>
+		    <when test="orderValue eq 'preference'">A.preference</when>
+		    <otherwise>A.regdate</otherwise>
+		</choose>  -->
+		
+	</select>
+	
+	 <!--최신순 -->
+	 <select id="showRecently" resultType="bucket">
+	  	SELECT *
+		FROM B_bucketlist
+		ORDER BY bucket_id desc;
+	 </select>
+	 
+	 <!-- 필요도순 -->
+	<select id="showNeed" resultType="bucket">
+		SELECT *
+		FROM B_bucketlist
+		ORDER BY need desc;	
+	</select>
+	
+	<update id="startBucket">
+		update B_bucketlist set start_date=curdate(), state = 1 where bucket_id=#{bucket_id}
+	</update>
+	
+	<update id="endBucket">
+		update B_bucketlist set end_date=curdate(), state = 2 where bucket_id=#{bucket_id}
+		
+	</update>
+	
+	<select id = "getTagCount" resultType = "tagCount">
+		SELECT T.tag_name AS Tag_name, COUNT(H.tag_id) AS Tag_count
+		FROM B_tag AS T, B_bucket_has_tag AS H
+		WHERE T.tag_id = H.tag_id
+		GROUP BY T.tag_name;
+	</select>
+	
+	<select id = "searchOneBucketByTag" resultType="bucket"> 
+		SELECT *
+		FROM B_bucketlist AS C
+		WHERE C.bucket_id IN (
+		    SELECT T.bucket_id
+		    FROM B_bucket_has_tag AS T, B_bucketlist AS C
+		    WHERE T.tag_id = (
+		        SELECT tag_id
+		        FROM B_tag
+		        WHERE tag_name = #{tag_name}
+		    )
+		);
+	</select>
+	 
+	
+</mapper>

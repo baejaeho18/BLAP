@@ -12,6 +12,7 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
 <link href="./resources/assets/css/statistics.css" rel="stylesheet">
 
 <style>
@@ -49,13 +50,13 @@
 		        <a class="nav-link" href="about">ABOUT</a>
 		      </li>
 		      <li class="nav-item me-5">
-		        <a class="nav-link" href="Bucketlist">BUCKET</a>
+		        <a class="nav-link" href="readbucket">BUCKET</a>
 		      </li>
 		      <li class="nav-item me-5">
-		        <a class="nav-link" href="Budget">BUDGET</a>
+		        <a class="nav-link" href="readbudget">BUDGET</a>
 		      </li>
 		      <li class="nav-item me-5">
-		        <a class="nav-link" href="Mypage">PROFILE</a>
+		        <a class="nav-link" href="readaccount">PROFILE</a>
 		      </li>
 		    </ul>
 		  </div>
@@ -68,7 +69,7 @@
 				<div class="container-fluid">
 					<div class="row align-items-md-stretch">
 							<!-- CATEGORY -->
-							<div class="col-sm-6">
+<!-- 							<div class="col-sm-6">
 								<div>
 									<ul
 										class="nav col-12 justify-content-center mb-md-0">
@@ -99,12 +100,12 @@
 										</a></li>
 									</ul>
 								</div>
-							</div>
+							</div> -->
 							<!-- RETURN TO LIST -->
-							<div class="col-sm-6">
+							<div class="col-sm-12">
 								<div>
 									<div class="container-fluid pt-3 pe-5 text-end">
-										<button id="budget" type="button" class="btn btn-outline-primary" onclick=" location.href='./Budget'">목록</button>
+										<button id="budget" type="button" class="btn btn-outline-primary" onclick=" location.href='./readbudget'">목록</button>
 									</div>
 								</div>
 							</div>
@@ -118,10 +119,10 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-sm-6">
+						<div class="col-sm-5">
 							<div class="p-5">
 								<div>
-									<canvas id="doughnut-chart" width=250 height=100 style=" margin-top:30px"></canvas> 
+									<canvas id="doughnut-chart" width=150 height=100 style="width : 50%"></canvas> 
 								</div>
 							</div>
 						</div>
@@ -145,96 +146,133 @@
 			</button>
 		</div>
 	</footer>
-	<script>
-		const labels = [ 'Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.',
-				'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.', ];
 
-		const data = {
-			labels : labels,
-			datasets : [
-					{
-						label : '당월 사용',
-						fill : false,
-						backgroundColor : 'rgba(54, 162, 235, 0.5)',
-						borderColor : 'rgba(54, 162, 235, 0.5)',
-						borderWidth : 1,
-						data : [ 2500, 3200, 4000, 2700, 2600, 4900, 7400,
-								7600, 5500, 5400, 5500, 8500 ],
-					},
-					{
-						label : '전년 동월',
-						backgroundColor : 'rgba(255, 99, 132, 0.5)',
-						borderColor : 'rgba(255, 99, 132, 0.5)',
-						borderWidth : 1,
-						data : [ 2400, 3100, 2500, 500, 2000, 2300, 4000, 6000,
-								4800, 4400, 5000, 5500 ],
-					} ]
-		};
+ <script>
+   	var chartLabels2 = [];
+	var chartData2 = [];
+	
+	$.getJSON("http://localhost:8080/blapweb/tagexpenditure", function(data2) {
+		
+		$.each(data2, function(inx, obj) {
+				console.log(obj.Tag_name);
+				console.log(obj.Expenditure_sum);
+			 	chartLabels2.push(obj.Tag_name);
+				chartData2.push(obj.Expenditure_sum);
+		});
 
-		const config = {
-			type : 'line',
-			data : data,
-			options : {
-				responsive : true,
-				plugins : {
-					legend : {
-						position : 'top',
+		createChart2();
+		console.log(data2)
+		console.log(chartLabels2) 
+		console.log(chartData2)
+	});
+	
+	var DoughnutExpenditureChartData = {
+			labels : chartLabels2,
+			datasets : [{
+					label : '당월 사용',
+					fill : false,
+					
+					backgroundColor : ["#2F7C93", "#C56064","#CF7A34","#49A98B","#4981A9"],
+					borderColor :  ["#2F7C93", "#C56064","#CF7A34","#49A98B","#4981A9"],
+					borderWidth : 1,
+					data : chartData2
+			}]
+	}
+	
+	var doughnutOptions = {
+			tooltips: {
+				enabled: false
+			},
+			legend: {
+				display: false
+			},
+			plugins: {
+				title: {
+			         display: true,
+			         text: '카테고리별 지출 내역'
+			       },
+				datalabels: {
+					formatter: (value, ctx) => {
+						let datasets = ctx.chart.data.datasets[0].data;
+						if(value!=0){
+							let sum = 0;
+							dataArr = ctx.chartdata.datasets[0].data;
+							dataArr.map(data => {
+								sum += parseInt(data);
+							});
+							let percentage = Math.round((value*100 / sum))+"%";
+							return percentage;
+						}
+						else {
+							let percentage = "";
+							return percentage;
+						}
 					},
-					title : {
-						display : true,
-						text : '월별 지출 내역'
+					color: "#fff",
+				}
+			}
+	};
+   
+  	function createChart2(){
+  		var ctx2 = document.getElementById("doughnut-chart");
+  		new Chart(ctx2,{
+		   type: 'doughnut',
+		   data: DoughnutExpenditureChartData,
+		   options: doughnutOptions
+		});	
+  	}
+ </script>
+ 
+ <script>
+  	var chartLabels = ['1월','2월','5월','7월','8월'];
+	var chartData = [];
+	
+	var LineExpenditureChartData = {
+			labels : chartLabels,
+			datasets : [{
+					label : '당월 사용',
+					fill : false,
+					backgroundColor : 'rgba(54, 162, 235, 0.5)',
+					borderColor : 'rgba(54, 162, 235, 0.5)',
+					borderWidth : 1,
+					data : chartData
+			}]
+	}
+	
+	function createChart() {
+		var ctx = document.getElementById("myChart1").getContext("2d");
+		new Chart(ctx, {
+		      type: 'line',
+			  data: LineExpenditureChartData,
+			  options : {
+					responsive : true,
+					plugins : {
+						legend : {
+							position : 'top',
+						},
+						title : {
+							display : true,
+							text : '월별 지출 내역'
+						}
 					}
 				}
-			},
-		};
-
-		const myChart1 = new Chart(document.getElementById('myChart1'), config);
-	</script>
+		}); 
+	} 
 	
-	<script src="./resources/assets/js/popper.js"></script>
-   <script src="./resources/assets/js/bootstrap.min.js"></script>
-   <script>
-/*    new Chart(document.getElementById("doughnut-chart"), {
-       type: 'doughnut',
-       data: {
-        labels: "여행", "음식", "취미", "쇼핑", "기타"],
-         datasets: [
-           {
-             label: "STATE (percent)",
-             backgroundColor: ["#CE6B6B", "#F1CD71","#569D73"],
-             data: [49, 27, 24]
-           }
-         ]
-       },
-   }); */
-   new Chart(document.getElemenyById("doughnut-chart"),{
-			   type: 'polarArea',
-			   data: data,
-			   options: {
-			     responsive: true,
-			     scales: {
-			       r: {
-			         pointLabels: {
-			           display: true,
-			           centerPointLabels: true,
-			           font: {
-			             size: 18
-			           }
-			         }
-			       }
-			     },
-			     plugins: {
-			       legend: {
-			         position: 'top',
-			       },
-			       title: {
-			         display: true,
-			         text: 'Chart.js Polar Area Chart With Centered Point Labels'
-			       }
-			     }
-			   },
+	$.getJSON("http://localhost:8080/blapweb/expenditure", function(data) {
 		
-   })
+		$.each(data, function(inx, obj) {
+				console.log(obj.account_date);
+				console.log(obj.money);
+			 	/* chartLabels.push(obj.account_date); */
+				chartData.push(obj.money);
+		});
+
+		createChart();
+		console.log(data)
+		console.log(chartLabels) 
+		console.log(chartData)
+	});
  </script>
  
 </body>

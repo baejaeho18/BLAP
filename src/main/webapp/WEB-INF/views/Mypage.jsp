@@ -12,10 +12,16 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-	<!-- 모달 -->
-	<style>
-            #cate_m_modal, #cate_p_modal, #add_modal {
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+   <script>
+      function selChange() {
+         var sel = document.getElementById('cntPerPage').value;
+         location.href="readaccount?nowPage=${paging.nowPage}&cntPerPage="+sel;
+      }
+   </script>
+   <!-- 모달 -->
+   <style>
+            #add_modal, #sub_modal {
                 display: none;
                 width: 400px;
                 height:200px; 
@@ -25,199 +31,201 @@
                 border-radius: 5px;
             }
 
-            #cate_p_modal .modal_close_btn, #cate_m_modal .modal_close_btn, #add_modal .modal_close_btn {
+            #add_modal .modal_close_btn, #sub_modal .modal_close_btn{
                 position: absolute;
                 top: 5px;
                 right: 10px;
             }
             
-             #cate_m_modal .finish, #cate_p_modal .finish {
+            
+             #add_modal .finish, #sub_modal .finish{
                 position: absolute;
-                bottom: 30px;
-                right: 50px;
-                border: 0px;
-            	background-color: white;
-            	height:8; 
-	            width:16;
-            }
-             #add_modal .finish{
-             	position: absolute;
                 bottom: 10px;
                 right: 20px;
             }
             input{
-	             background-color: #EBEBEB;
-	             padding: 5px;
-	             border: 0px;
-	             text-align: center;
+                background-color: #EBEBEB;
+                padding: 5px;
+                border: 0px;
+                text-align: center;
             }
             button{
-            	border: 0px;
-            	background-color: white;
+               border: 0px;
+               background-color: white;
             }
         </style>
   </head>
 
   <body>
-      <!-- navbar 여기는 지워도 괜찮을 거 같아용 -->
-	     <!--  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-	        <div class="container-fluid">
-	          <a class="navbar-brand" href="#">Navbar</a>
-	          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-	            <span class="navbar-toggler-icon"></span>
-	          </button>
-	          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-	            <div class="navbar-nav">
-	              <a class="nav-link active" aria-current="page" href="#">Home</a>
-	              <a class="nav-link" href="#">Features</a>
-	              <a class="nav-link" href="#">Pricing</a>
-	              <a class="nav-link disabled">Disabled</a>
-	            </div>
-	          </div>
-	        </div>
-	      </nav> -->
-	      
-	      <!-- style="border: 3px solid purple" -->
-	      
-	    <nav class="navbar navbar-expand-sm bg-white navbar-light border-bottom">
-	  <div class="container-fluid">
-	  	 <a href=".">
-	      <img src="./resources/assets/img/logo.png" alt="blap Logo" style="width:80px; height:55px">
-	     </a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
-	      <span class="navbar-toggler-icon"></span>
-	    </button>
-	    <div class="collapse navbar-collapse d-flex justify-content-center" id="collapsibleNavbar" >
-		   <ul class="navbar-nav">
-		      <li class="nav-item me-5">
-		        <a class="nav-link" href="about">ABOUT</a>
-		      </li>
-		      <li class="nav-item me-5">
-		        <a class="nav-link" href="Bucketlist">BUCKET</a>
-		      </li>
-		      <li class="nav-item me-5">
-		        <a class="nav-link" href="Budget">BUDGET</a>
-		      </li>
-		      <li class="nav-item me-5">
-		        <a class="nav-link" href="Mypage">PROFILE</a>
-		      </li>
-		    </ul>
-		  </div>
-	  </div>
-	</nav>
-	
-	<br>
+   
+         
+         <!-- style="border: 3px solid purple" -->
+         
+       <nav class="navbar navbar-expand-sm bg-white navbar-light border-bottom">
+     <div class="container-fluid">
+         <a href=".">
+         <img src="./resources/assets/img/logo.png" alt="blap Logo" style="width:80px; height:55px">
+        </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+         <span class="navbar-toggler-icon"></span>
+       </button>
+       <div class="collapse navbar-collapse d-flex justify-content-center" id="collapsibleNavbar" >
+         <ul class="navbar-nav">
+            <li class="nav-item me-5">
+              <a class="nav-link" href="about">ABOUT</a>
+            </li>
+            <li class="nav-item me-5">
+              <a class="nav-link" href="readbucket">BUCKET</a>
+            </li>
+            <li class="nav-item me-5">
+              <a class="nav-link" href="readbudget">BUDGET</a>
+            </li>
+            <li class="nav-item me-5">
+              <a class="nav-link" href="readaccount">PROFILE</a>
+            </li>
+          </ul>
+        </div>
+     </div>
+   </nav>
+   
+   <br>
     
-	    	<div class = "row d-flex justify-content-start ms-5 me-5" style="text-align: center;">
-				<div class = "col-5 mt-3 d-flex justify-content-start">		
-					<div class = "ml-3" style="padding-left: 37px; padding-bottom: 5px;">
-						<img src="./resources/assets/img/user.png" height="70" width="70">
-						<div class="mt-3 ms-2"> 홍길동
-							<a href="SignIn" style="text-decoration-line : none;">
-								<small class = "text-muted"> 로그아웃</small>
-							</a>
-						<div class = "row d-flex justify-content-center" style="text-align:center;" >2000000@gmail.com</div>
-					</div>
-					</div>
-					
-					
-				</div>	
-				
-				<!-- 잔여금액 -->
-				<div class = "col-6"  >
-					<div class = "row mt-5"  >
-						잔여금액
-						<div class = "col-1 " ></div>
-						<div class = "col-3  alert-secondary align-middle" style = "text-align:center; line-height: 40px; width: 180px; height: 40px;background-color:#EBEBEB; border-radius:8px;" >360,000</div>
-						<div class = "col-1" style="line-height: 40px;">₩</div>
-						<div class = "col-3" style = "text-align:center;"><button id="popup_open_btn"><img src="./resources/assets/img/금액추가.png" height="40" width="40"></button></div>
-					</div>
-					
-					<!-- 지출내역 -->
-					
-					<div class = "row mt-3" >지출내역</div>
-					
-					<!-- 지출내역 한 묶음 현재 입출금 내역이랑 총 내역이 따로 있어서 합치즌 게 나을 거 같기도?? -->
-						<div class = "row">
-							<div class = "col-2"></div>
-							<div class = "col-1 "style=" text-align:right;">1/1</div>
-							<div class = "col-3 " style = "text-align:center; color:#084DFC">+70,000</div>
-							<div class = "col"></div>
-						</div>
-						<div class = "row">
-							<div class = "col-3"></div>
-							<div class = "col-3 " style = "font-size: 15px; text-align:center; color:#8B8B8F; border-radius:8px">680,000원</div>
-						</div>
-					<!-- 여기까지 한 묶음 -->
-					
-						<div class = "row mt-2">
-						    <div class = "col-2"></div>
-							<div class = "col-1 "style=" text-align:right;">1/7</div>
-							<div class = "col-3 " style = "text-align:center;color:#FC0808">-300,000</div>
-							<div class = "col-3" style = "font-size: 15px">제주도 여행</div>
-						</div>
-						<div class = "row">
-							<div class = "col-3"></div>
-							<div class = "col-3 " style = "font-size: 15px; text-align:center; color:#8B8B8F">380,000원</div>
-						</div>
-						
-						<div class = "row mt-2">
-							<div class = "col-2"></div>
-							<div class = "col-1 "style=" text-align:right;">1/9</div>
-							<div class = "col-3 " style = "text-align:center; color:#084DFC">+100,000</div>
-							<div class = "col "></div>
-						</div>
-						<div class = "row">
-							<div class = "col-3"></div>
-							<div class = "col-3 " style = "font-size: 15px; text-align:center; color:#8B8B8F">480,000원</div>
-						</div>
-						
-						<div class = "row mt-2">
-							<div class = "col-2"></div>
-							<div class = "col-1 "style=" text-align:right;">1/15</div>
-							<div class = "col-3 " style = "text-align:center; color:#084DFC">+30,000</div>
-							<div class = "col "></div>
-						</div>
-						<div class = "row">
-							<div class = "col-3"></div>
-							<div class = "col-3 " style = "font-size: 15px; text-align:center; color:#8B8B8F">510,000원</div>
-						</div>
-						
-						<div class = "row mt-2">
-							<div class = "col-2"></div>
-							<div class = "col-1 "style=" text-align:right;">1/22</div>
-							<div class = "col-3 " style = "text-align:center; color:#FC0808;" >-150,000</div>
-							<div class = "col-sm-3" style = " font-size: 15px; ">테니스레슨</div>
-						</div>
-						<div class = "row">
-							<div class = "col-3"></div>
-							<div class = "col-3 " style = "font-size: 15px; text-align:center; color:#8B8B8F">360,000원</div>
-						</div>				
-				</div>		
-			</div>
-			
-			<div class="mt-4 p-3 bg-secondary text-white text-end" style="margin-bottom:0; background-color:#C1DDD3 !important; height:100px">
-				<p class=" pt-5" style="display: inline-block; font-size:13px">이용약관</p>
-				<p class="pt-5" style="display: inline-block; font-size:13px">도움말</p>
-			</div>
+          <div class = "row d-flex justify-content-start ms-5 me-5" style="text-align: center;">
+            <div class = "col-5 mt-3 d-flex justify-content-start">      
+               <div class = "ml-3" style="padding-left: 37px; padding-bottom: 5px;">
+                  <img src="./resources/assets/img/user.png" height="70" width="70">
+                  <div class="mt-3 ms-2"> 홍길동
+                     <a href="SignIn" style="text-decoration-line : none;">
+                        <small class = "text-muted"> 로그아웃</small>
+                     </a>
+                  <div class = "row d-flex justify-content-center" style="text-align:center;" >2000000@gmail.com</div>
+               </div>
+               </div>
+               
+               
+            </div>      
+            
+            <!-- 잔여금액 -->
+        <div class = "col-6"  >
+               <div class = "row mt-5"  >
+                  잔여금액
+                  <div class = "col-1 " ></div>
+                     
+                  <c:forEach items="${viewAll}" var="b" varStatus = "status">
+                  <c:if test = "${status.count eq 1}">
+                  <div class = "col-3  alert-secondary align-middle" style = "text-align:center; line-height: 40px; width: 180px; height: 40px;background-color:#EBEBEB; border-radius:8px;" >${b.getBalance()}</div>
+                  </c:if>
+                  
+                  </c:forEach>   
+                  <div class = "col-1" style="line-height: 40px;">₩</div>
+                  <div class = "col-3" style = "text-align:center;"><button id="popup_open_btn"><img src="./resources/assets/img/금액추가.png" height="40" width="40"></button><button id="popup_s_open_btn"><img src="./resources/assets/img/금액차감.png" height="42" width="40"></button></div>
+               </div>
+               
+               <!-- 지출내역 -->
+            
+               <div class = "row mt-3" >지출내역</div>
+               <script>var r  = "";</script>
+               <!-- 지출내역 한 묶음 현재 입출금 내역이랑 총 내역이 따로 있어서 합치즌 게 나을 거 같기도?? -->
+                <c:forEach items="${viewAll}" var="u"> 
+               
+                
+                
+                  <div class = "row">
+                     <div class = "col-2"></div>
+                     
+                     <div class = "col-1 "style=" text-align:right;">
+                        <script>
+                              var r = new Date ('${u.getAccount_date()}');
+                              var change = r.getMonth()+1;
+                              var change2 = r.getDate();
+                              
+                              document.write(change + '/' + change2);
+                        </script>
+                     </div>
+                  
+               <c:if test = "${u.getType() eq 0}">        
+                     <div class = "col-3 " style = "text-align:center; color:#084DFC;display:inline;">+${u.getMoney()}</div>
+               </c:if>
+               
+               <c:if test = "${u.getType() eq 1}">        
+                     <div class = "col-3 " style = "text-align:center;color:#FC0808;display:inline;">-${u.getMoney()}</div>
+               </c:if>
+               
+               <c:if test = "${u.getType() eq 2}">        
+                     <div class = "col-3 " style = "text-align:center;color:#FC0808;display:inline;">-{u.getMoney()}</div>
+               </c:if>
+               <div class = "col"></div>   
+                  </div>
+                  <div class = "row">
+                     <div class = "col-3"></div>
+                     <div class = "col-3 mb-4" style = "font-size: 15px; text-align:center; color:#8B8B8F; border-radius:8px">${u.getBalance()}원</div>
+                  </div>
+                  
+                  </c:forEach>
+               
+               <div class="mt-5"style="display: block;  text-align: center; width:50%">      
+               <c:if test="${paging.startPage != 1 }">
+                  <a href="/blapweb/readaccount?nowPage=${paging.startPage - 1 }&cntPerPage=${paging.cntPerPage}">&lt;</a>
+               </c:if>
+               <c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="p">
+                  <c:choose>
+                     <c:when test="${p == paging.nowPage }">
+                        <b class="me-3">${p }</b>
+                     </c:when>
+                     <c:when test="${p != paging.nowPage }">
+                        <a href="/blapweb/readaccount?nowPage=${p }&cntPerPage=${paging.cntPerPage}">${p }</a>
+                     </c:when>
+                  </c:choose>
+               </c:forEach>
+               <c:if test="${paging.endPage != paging.lastPage}">
+                  <a href="/blapweb/readaccount?nowPage=${paging.endPage+1 }&cntPerPage=${paging.cntPerPage}">&gt;</a>
+               </c:if>
+            </div>
+            </div>   
+            
+         </div>
+         
+         <div class="mt-4 p-3 bg-secondary text-white text-end" style="margin-bottom:0; background-color:#C1DDD3 !important; height:100px">
+            <p class=" pt-5" style="display: inline-block; font-size:13px">이용약관</p>
+            <p class="pt-5" style="display: inline-block; font-size:13px">도움말</p>
+         </div>
 
 
-			<!-- 금액추가모달 -->
-			 <div id="add_modal">
-			 <div style = "font-size: 18px; text-align:center; ">예산추가</div>
-            	
+         <!-- 금액추가모달 -->
+          <div id="add_modal">
+          <div style = "font-size: 18px; text-align:center; ">예산추가</div>
+          
+            <form action="addaccountok" method="post">
             <div class = "row mt-4 mb-4 pt-4">
             <div class="col-4" style = "font-size:15px;" >추가할 금액</div>
-            <div class="col-3" style = "font-size: 16px; border-radius:3px;" ><input type = "text"></div>
+            <div class="col-3" style = "font-size: 16px; border-radius:3px;" ><input type = "text" name = "money"/></div>
             </div>
-            <button class="finish" style="border-radius:10px; border: 1px solid #DDDDDD; width:60px; height:30px; font-size:14px">완료</button>
+            
+            <button type = "submit" class="finish" style="border-radius:10px; border: 1px solid #DDDDDD; width:60px; height:30px; font-size:14px">완료</button>
             <a class="modal_close_btn" style = "font-size 25px; text-align:center;  text-decoration-line: none; color : black">x</a>
+            <input type = "hidden" value="0" name = "type"/>
+            </form>
         </div>
         
-		
+        <!-- 금액차감모달 -->
+          <div id="sub_modal">
+          <div style = "font-size: 18px; text-align:center; ">예산차감</div>
+             
+            <form action="subaccountok" method="post">
+            <div class = "row mt-4 mb-4 pt-4">
+            <div class="col-4" style = "font-size:15px;" >차감할 금액</div>
+            <div class="col-3" style = "font-size: 16px; border-radius:3px;" ><input type = "text" name = "money"/></div>
+            <input type = "hidden" value="1" name = "type"/>
+            </div>
+            
+            <button type = "submit" class="finish" style="border-radius:10px; border: 1px solid #DDDDDD; width:60px; height:30px; font-size:14px">완료</button>
+            <a class="modal_close_btn" style = "font-size 25px; text-align:center;  text-decoration-line: none; color : black">x</a>
+            </form>
+        </div>
+      
 
 
-		        <script>
+              <script>
             function modal(id) {
                 var zIndex = 9999;
                 var modal = document.getElementById(id);
@@ -275,17 +283,14 @@
                 // 모달창 띄우기
                 modal('add_modal');
             });
-            document.getElementById('cate_p_popup_open_btn').addEventListener('click', function() {
+            document.getElementById('popup_s_open_btn').addEventListener('click', function() {
                 // 모달창 띄우기
-                modal('cate_p_modal');
+                modal('sub_modal');
             });
-            document.getElementById('cate_m_popup_open_btn').addEventListener('click', function() {
-                // 모달창 띄우기
-                modal('cate_m_modal');
-            });
+            
         </script>
-		
-	
+      
+   
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
