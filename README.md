@@ -1,4 +1,4 @@
-# BLAP - BuckList Account Plan
+# BLAP - BucketList Account Plan
 
 
 <img width="500" src="https://ifh.cc/g/YSZZhi.png">
